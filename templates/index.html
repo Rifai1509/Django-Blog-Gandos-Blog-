@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-3 left">
+            {% for post in post_list %}
+                <div class="card mb-4" >
+                    <div class="card-body">
+                        <h2 class="card-title">{{ post.title }}</h2>
+                        <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
+                        <p class="card-text">{{post.content|slice:":200" }}</p>
+                        <a href="{% url 'post_detail' post.slug  %}" class="btn btn-dark">Baca selengkapnya &rarr;</a>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+            {% block sidebar %}
+            {% include 'sidebar.html' %}
+            {% endblock sidebar %}
+
+    </div>
+    {% if is_paginated %}
+    <nav aria-label="Page navigation conatiner"></nav>
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn btn-warning">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-dark"> < prev </a>
+        {% endif %}
+        <li class="btn btn-info disabled"> {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </li>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-dark"> next > </a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-warning"> last &raquo;</a>
+        {% endif %}
+    {% endif %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <div class="topnav">
+            <style>body {font-size: 24px;}</style>
+            <div class="search-container">
+                <form action="?page=">
+                    <input type="text" placeholder="Cari halaman" name="page">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </ul>
+
+</div>
+
+{%endblock%}
